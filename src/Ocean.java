@@ -1,3 +1,5 @@
+import java.sql.SQLOutput;
+
 /**
  * This class manages the game state by keeping track of what entity is
  * contained in each position on the game board.
@@ -38,10 +40,9 @@ public class Ocean implements OceanInterface {
 	 */
 	public Ocean() {
 		ships = new Ship[10][10];
-
 		for (int i = 0; i < ships.length; i ++ ){
 			for (int j = 0; j < ships[i].length; j ++) {
-				ships[i][j] = new EmptySea();
+				ships[i][j] = new EmptySea(i,j);
 			}
 		}
 	}
@@ -55,6 +56,11 @@ public class Ocean implements OceanInterface {
 	 */
 	public void placeAllShipsRandomly() {
 
+		ships[0][0] = new Submarine();
+		ships[0][1] = new Submarine();
+		ships[0][1].setBowRow(0);
+		ships[0][1].setBowColumn(1);
+
 	}
 
 	/**
@@ -67,6 +73,9 @@ public class Ocean implements OceanInterface {
 	 *         {@literal false} otherwise.
 	 */
 	public boolean isOccupied(int row, int column) {
+		if(!ships[row][column].getShipType().equals("emptySea")) {
+			return true;
+		}
 		return false;
 	}
 
@@ -83,6 +92,11 @@ public class Ocean implements OceanInterface {
 	 *         EmptySea), {@literal false} if it does not.
 	 */
 	public boolean shootAt(int row, int column) {
+
+		if (ships[row][column].shootAt(row,column)){
+			return true;
+		}
+
 		return false;
 	}
 
@@ -112,6 +126,9 @@ public class Ocean implements OceanInterface {
 	 *         {@literal false}.
 	 */
 	public boolean isGameOver() {
+		if(shipsSunk ==10) {
+			return true;
+		}
 		return false;
 	}
 
@@ -149,7 +166,18 @@ public class Ocean implements OceanInterface {
 	 * 
 	 */
 	public void print() {
-
+		System.out.print("\t");
+		for(int i = 0; i < 10; i++) {
+			System.out.printf("%d\t",i);
+		}
+		System.out.println();
+		for(int i = 0; i < 10; i++) {
+			System.out.printf("%d\t", i);
+			for(int j = 0; j < 10; j++) {
+				System.out.printf("%s\t", ships[i][j].toString());
+			}
+			System.out.printf("\n");
+		}
 	}
 
 }

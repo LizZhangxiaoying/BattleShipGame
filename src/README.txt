@@ -6,13 +6,17 @@ Question 2.
     the 2D array is made up by type Ship
         1. first it was filled with empty sea
         2. then it can be filled with ships
-        3. Ship[][] ships = new EmptySea();
+        3. Ship[10][10] ships = new EmptySea();
 
             are they all different object instances?
 
-            Ship[0][0] ships = new Destroyer();
+            ships[1][1]= new Destroyer();
             Ship[0][1] ships = new Destroyer();
             Ship[0][2] ships = new Destroyer();
             Ship[0][3] ships = new Destroyer();
 
- are we
+
+   printf (%c,  ships[1][2].getStatus
+
+
+   ships[1][2] = ship[1][3]

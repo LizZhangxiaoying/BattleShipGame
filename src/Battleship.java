@@ -1,6 +1,15 @@
-<<<<<<< HEAD
+
 public class Battleship extends Ship{
-=======
-public class Battleship {
->>>>>>> origin/master
+
+    public Battleship(){
+        super();
+        length = 4;
+        hit = new boolean[length];
+    }
+
+
+    @Override
+    public String getShipType() {
+        return "battleship";
+    }
 }

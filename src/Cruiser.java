@@ -1,6 +1,13 @@
-<<<<<<< HEAD
 public class Cruiser extends Ship{
-=======
-public class Cruiser {
->>>>>>> origin/master
+
+    public Cruiser() {
+    super();
+    length = 3;
+    hit = new boolean[length];
+    }
+
+    @Override
+    public String getShipType() {
+        return "cruiser";
+    }
 }
