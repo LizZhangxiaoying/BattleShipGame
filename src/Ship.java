@@ -60,9 +60,9 @@ public abstract class Ship {
         }
         if (horizontal) {
             for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < length + 1; j++) {
-                    if (pointOk(row, column)) {
-                        if (ocean.isOccupied(row + i, column + i)) {
+                for (int j = -1; j < length+1; j++) {
+                    if (pointOk(row + i,column + j)) {
+                        if (ocean.isOccupied(row + i, column + j)) {
                             return false;
                         }
                     }
@@ -70,8 +70,8 @@ public abstract class Ship {
             }
         } else {
             for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < length + 1; j++) {
-                    if (pointOk(row, column)) {
+                for (int j = -1; j < length+1; j++) {
+                    if (pointOk(row + j, column + i)) {
                         if (ocean.isOccupied(row + j, column + i)) {
                             return false;
                         }
@@ -84,15 +84,15 @@ public abstract class Ship {
 
     public boolean okInitialPoint(int row, int column, boolean horizontal) {
         if (horizontal) {
-            if (9 - column < length) {
-                return false;
+            if (10 - column >= length) {
+                return true;
             }
         } else {
-            if (9 - row < length) {
-                return false;
+            if (10 - row >=  length) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public boolean pointOk(int row, int column) {
@@ -110,10 +110,19 @@ public abstract class Ship {
 //    ocean - the Ocean in which this ship will be placed
 
     public void placeShipAt(int row, int column, boolean horizontal, Ocean ocean) {
-        if (okToPlaceShipAt(row, column, horizontal, ocean)) {
             setBowRow(row);
             setBowColumn(column);
-        }
+            setHorizontal(horizontal);
+
+            if (horizontal){
+                for (int i = 0; i < length; i++) {
+                    ocean.getShipArray()[row][column + i] = this;
+                }
+            }else {
+                for (int i = 0; i < length; i++) {
+                    ocean.getShipArray()[row + i][column] = this;
+                }
+            }
     }
 
     public boolean shootAt(int row, int column) {
@@ -153,12 +162,10 @@ public abstract class Ship {
 //            true if every part of the ship has been hit, and false otherwise.
 
     public String toString() {
-
-        if (hit[0]){
-            return "-";
+        if (isSunk()){
+            return "x";
         }
-
-        return ".";
+        return "S";
     }
 //    Returns a single character String to use in the Ocean's print method. This method should return "x" if the ship has been sunk, and "S" if it has not yet been sunk. This method can only be used to print out locations in the ocean that have been shot at; it should not be used to print locations that have not been the target of a shot yet.
 //    Overrides:

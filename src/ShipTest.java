@@ -7,9 +7,6 @@ class ShipTest{
 
 
 
-
-
-
     @org.junit.jupiter.api.Test
     void okInitialPoint() {
         int row1 = 8;
@@ -29,11 +26,12 @@ class ShipTest{
         Ship ship1 = new Battleship();
 
         assertFalse(ship1.okInitialPoint(row1,column1,true));
-        assertFalse(ship1.okInitialPoint(row6,column6,true));
+        assertTrue(ship1.okInitialPoint(row6,column6,true));
         assertTrue(ship1.okInitialPoint(row2,column2,true));
         assertFalse(ship1.okInitialPoint(row3,column3,false));
         assertFalse(ship1.okInitialPoint(row4,column4,false));
         assertTrue(ship1.okInitialPoint(row5,column5,false));
+
         }
 
 
@@ -143,7 +141,55 @@ class ShipTest{
 
         assertFalse(cruiser.isSunk());
 
+    }
 
+    @Test
+    void okToPlaceShipAt() {
+        Ship battleShip = new Battleship();
+        Ocean ocean = new Ocean();
+
+        battleShip.placeShipAt(1,2,true,ocean);
+        assertEquals("battleship", ocean.getShipArray()[1][2].getShipType());
+        assertEquals("battleship", ocean.getShipArray()[1][3].getShipType());
+        assertEquals("battleship", ocean.getShipArray()[1][4].getShipType());
+        assertEquals("battleship", ocean.getShipArray()[1][5].getShipType());
+        assertEquals("emptySea", ocean.getShipArray()[1][6].getShipType());
+        assertEquals("emptySea", ocean.getShipArray()[1][1].getShipType());
+        assertEquals("emptySea", ocean.getShipArray()[2][1].getShipType());
+    }
+
+    @Test
+    void testOkToPlaceShipAt() {
+        Ship battleShip = new Battleship();
+        Ship destroyer = new Destroyer();
+
+        Ship cruiser = new Cruiser();
+        Ocean ocean = new Ocean();
+        battleShip.placeShipAt(1,2,true,ocean);
+        battleShip.placeShipAt(5,5,true,ocean);
+
+
+        assertFalse(destroyer.okToPlaceShipAt(5,3,true,ocean));
+
+
+       assertFalse(cruiser.okToPlaceShipAt(1,2,true,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(2,2,true,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(1,6,true,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(1,8,true,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(2,3,true,ocean));
+
+       assertFalse(cruiser.okToPlaceShipAt(1,3,true,ocean));
+
+       assertTrue(cruiser.okToPlaceShipAt(1,7,true,ocean));
+       assertTrue(cruiser.okToPlaceShipAt(3,7,true,ocean));
+       assertTrue(cruiser.okToPlaceShipAt(8,2,true,ocean));
+       assertTrue(cruiser.okToPlaceShipAt(9,2,true,ocean));
+
+       assertFalse(cruiser.okToPlaceShipAt(1,2,false,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(1,3,false,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(1,4,false,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(2,4,false,ocean));
+       assertFalse(cruiser.okToPlaceShipAt(3,4,false,ocean));
 
     }
 }

@@ -26,14 +26,25 @@ public class BattleshipGame {
 
     private void start () {
         ocean.placeAllShipsRandomly();
+
         while(!ocean.isGameOver()) {
             ocean.print();
             System.out.print("grid already entered");
             System.out.println(getAlreadyPlaced());
+            System.out.printf("Shot num %d, Hit num %d, Sunk num %d \n", ocean.getShotsFired(), ocean.getHitCount(), ocean.getShipsSunk());
+            if (ocean.getShipArray()[row] [column].isSunk() &&  ocean.isOccupied(row,column)){
+                System.out.printf("you have sunk %s \n", ocean.getShipArray()[row] [column].getShipType());
+            }
             enterGrid();
-            System.out.println(ocean.shootAt(row,column));
+            ocean.shootAt(row,column);
+            }
 
+        if (ocean.getShipArray()[row] [column].isSunk() &&  ocean.isOccupied(row,column)){
+            System.out.printf("you have sunk %s \n", ocean.getShipArray()[row] [column].getShipType());
         }
+
+        System.out.printf("Game Over, Your Score Is %d ", ocean.getShotsFired());
+
     }
 
     private void enterGrid() {

@@ -1,4 +1,6 @@
 import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This class manages the game state by keeping track of what entity is
@@ -38,7 +40,11 @@ public class Ocean implements OceanInterface {
 	 * with EmptySea objects. Should also initialize the other instance variables
 	 * appropriately.
 	 */
+	protected ArrayList<Integer> gridUsed;
+
+
 	public Ocean() {
+		gridUsed = new ArrayList<>();
 		ships = new Ship[10][10];
 		for (int i = 0; i < ships.length; i ++ ){
 			for (int j = 0; j < ships[i].length; j ++) {
@@ -55,13 +61,59 @@ public class Ocean implements OceanInterface {
 	 * @see java.util.Random
 	 */
 	public void placeAllShipsRandomly() {
+		Random r = new Random();
+		int horizontal;
+		int row;
+		int column;
 
-		ships[0][0] = new Submarine();
-		ships[0][1] = new Submarine();
-		ships[0][1].setBowRow(0);
-		ships[0][1].setBowColumn(1);
+		for (Ship ship : buildShips()) {
 
+			while (true){
+
+				horizontal = r.nextInt(2);
+
+				if (horizontal == 1) {
+
+					row = r.nextInt(10 );
+					column = r.nextInt(10);
+
+					if (ship.okToPlaceShipAt(row, column, true, this)) {
+						ship.placeShipAt(row, column, true, this);
+						break;
+					}
+
+				}else {
+					row = r.nextInt(10);
+					column = r.nextInt(10);
+
+					if (ship.okToPlaceShipAt(row, column, false, this)) {
+						ship.placeShipAt(row, column, false, this);
+						break;
+					}
+				}
+			}
+		}
 	}
+
+	public Ship[] buildShips (){
+		Ship temp;
+		Ship[] ships = new Ship[10];
+
+		for(int i = 0; i < 10; i++) {
+
+			if (i==0) {
+				ships [i] = new Battleship();
+			}else if (i == 1 || i == 2){
+				ships [i] = new Cruiser();
+			}else if (i < 6){
+				ships [i] = new Destroyer();
+			}else {
+				ships [i] = new Submarine();
+			}
+		}
+	return ships;
+	}
+
 
 	/**
 	 * Checks if this coordinate is not empty; that is, if this coordinate does not
@@ -73,7 +125,7 @@ public class Ocean implements OceanInterface {
 	 *         {@literal false} otherwise.
 	 */
 	public boolean isOccupied(int row, int column) {
-		if(!ships[row][column].getShipType().equals("emptySea")) {
+		if (!ships[row][column].getShipType().equals("emptySea")) {
 			return true;
 		}
 		return false;
@@ -92,12 +144,26 @@ public class Ocean implements OceanInterface {
 	 *         EmptySea), {@literal false} if it does not.
 	 */
 	public boolean shootAt(int row, int column) {
+		gridUsed.add(convertGrid(row,column));
+		shotsFired = shotsFired + 1;
 
 		if (ships[row][column].shootAt(row,column)){
-			return true;
-		}
 
+			if (isOccupied(row,column)) {
+				hitCount++;
+				if (ships[row][column].isSunk()) {
+					shipsSunk++;
+				}
+			}
+			return true;
+
+		}
 		return false;
+	}
+
+	public int convertGrid(int row, int column) {
+		int num = row*10 + column;
+		return num;
 	}
 
 	/**
@@ -111,7 +177,7 @@ public class Ocean implements OceanInterface {
 	 * @return the number of hits recorded in this game.
 	 */
 	public int getHitCount() {
-		return this.shotsFired;
+		return this.hitCount;
 	}
 
 	/**
@@ -142,7 +208,7 @@ public class Ocean implements OceanInterface {
 	 * @return the 10x10 array of ships.
 	 */
 	public Ship[][] getShipArray() {
-		return null;
+		return ships;
 	}
 
 	/**
@@ -174,10 +240,18 @@ public class Ocean implements OceanInterface {
 		for(int i = 0; i < 10; i++) {
 			System.out.printf("%d\t", i);
 			for(int j = 0; j < 10; j++) {
-				System.out.printf("%s\t", ships[i][j].toString());
+
+				if (gridUsed.contains(convertGrid(i,j))) {
+					System.out.printf("%s\t", ships[i][j].toString());
+
+				}else if (!ships[i][j].getShipType().equals("emptySea")) {
+					System.out.printf("%c\t", ships[i][j].getShipType().charAt(0));
+				}else {
+					System.out.print(".\t");
+				}
 			}
+
 			System.out.printf("\n");
 		}
 	}
-
 }

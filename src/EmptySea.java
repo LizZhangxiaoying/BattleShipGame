@@ -12,4 +12,13 @@ public EmptySea(int row, int column) {
     public String getShipType() {
     return "emptySea";
     }
+
+    @Override
+    public String toString() {
+        return "-";
+    }
 }
+
+
+
+

@@ -7,15 +7,10 @@ public class Submarine extends Ship {
     }
 
     @Override
-    public String toString() {
-        if (isSunk()){
-            return "S";
-        }
-        return ".";
-    }
-
-    @Override
     public String getShipType() {
         return "submarine";
     }
 }
+
+
+
