@@ -147,16 +147,17 @@ public class Ocean implements OceanInterface {
 		gridUsed.add(convertGrid(row,column));
 		shotsFired = shotsFired + 1;
 
-		if (ships[row][column].shootAt(row,column)){
-
-			if (isOccupied(row,column)) {
+		if (isOccupied(row, column)) {
+			if (!ships[row][column].isSunk()) {
+				ships[row][column].shootAt(row, column);
 				hitCount++;
 				if (ships[row][column].isSunk()) {
 					shipsSunk++;
 				}
+				return true;
 			}
-			return true;
-
+		} else {
+			ships[row][column].shootAt(row, column);
 		}
 		return false;
 	}

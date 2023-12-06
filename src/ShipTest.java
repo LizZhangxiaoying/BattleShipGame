@@ -84,37 +84,47 @@ class ShipTest{
 
     @Test
     void shootAt() {
-        Ship emptySea = new EmptySea(1,1);
         Ship battleShip = new Battleship();
+        Ship cruiser = new Cruiser();
+        cruiser.setHorizontal(true);
+        cruiser.setBowRow(5);
+        cruiser.setBowColumn(5);
         battleShip.setBowColumn(1);
         battleShip.setBowRow(1);
         battleShip.setHorizontal(true);
 
-        assertTrue(emptySea.shootAt(1,1));
-        assertFalse(emptySea.shootAt(1,2));
-        assertFalse(emptySea.shootAt(2,1));
+        assertTrue(cruiser.shootAt(5,5));
+        assertTrue(cruiser.shootAt(5,5));
+        assertTrue(cruiser.shootAt(5,5));
+        assertTrue(cruiser.shootAt(5,5));
+        assertFalse(cruiser.isSunk());
+        assertTrue(cruiser.shootAt(5,6));
+        assertTrue(cruiser.shootAt(5,7));
+        assertTrue(cruiser.isSunk());
+        assertFalse(cruiser.shootAt(5,5));
 
+
+        assertFalse(cruiser.shootAt(5,8));
+        assertFalse(cruiser.shootAt(5,9));
+
+        assertTrue(battleShip.shootAt(1,1));
+        assertTrue(battleShip.shootAt(1,1));
+        assertTrue(battleShip.shootAt(1,1));
+        assertTrue(battleShip.shootAt(1,1));
+        assertTrue(battleShip.shootAt(1,1));
+
+        assertFalse(battleShip.isSunk());
         assertTrue(battleShip.shootAt(1,1));
         assertTrue(battleShip.shootAt(1,2));
         assertTrue(battleShip.shootAt(1,3));
         assertTrue(battleShip.shootAt(1,4));
+        assertTrue(battleShip.isSunk());
 
         assertFalse(battleShip.shootAt(2,1));
         assertFalse(battleShip.shootAt(2,2));
         assertFalse(battleShip.shootAt(0,0));
         assertFalse(battleShip.shootAt(9,9));
 
-        battleShip.setHorizontal(false);
-
-        assertTrue(battleShip.shootAt(1,1));
-        assertTrue(battleShip.shootAt(2,1));
-        assertTrue(battleShip.shootAt(3,1));
-        assertTrue(battleShip.shootAt(4,1));
-
-        assertFalse(battleShip.shootAt(2,2));
-        assertFalse(battleShip.shootAt(4,3));
-        assertFalse(battleShip.shootAt(0,0));
-        assertFalse(battleShip.shootAt(9,9));
 
     }
 

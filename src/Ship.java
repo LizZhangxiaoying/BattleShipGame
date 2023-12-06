@@ -126,6 +126,9 @@ public abstract class Ship {
     }
 
     public boolean shootAt(int row, int column) {
+        if (isSunk()){
+            return false;
+        }
         if (horizontal) {
             if (bowRow == row && column >= bowColumn && column <= bowColumn + length - 1) {
                 hit[column - bowColumn] = true;
