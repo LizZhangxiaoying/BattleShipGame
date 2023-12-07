@@ -59,19 +59,24 @@ public class OceanTest {
     }
 
         @Test
-    public void testGameOver() {
+  void testGameOver() {
+        ocean.placeAllShipsRandomly();
+        for(int i = 0; i < 10; i++){
+            ocean.shootAt(0, i);
+        }
         assertFalse(ocean.isGameOver());
-        ocean.shipsSunk= 9;
-        assertFalse(ocean.isGameOver());
-        ocean.shipsSunk = 10;
+        for(int i = 0; i< 10; i++){
+            for(int j =  0; j < 10; j++) {
+                ocean.shootAt(i, j);
+            }
+        }
         assertTrue(ocean.isGameOver());
     }
-
         @Test
-    public void testOccupy() {
-            Ship battleShip = new Battleship();
-            Ship cruiser = new Cruiser();
-            Ship destroyer = new Destroyer();
+void testOccupy() {
+        Ship battleShip = new Battleship();
+        Ship cruiser = new Cruiser();
+        Ship destroyer = new Destroyer();
 
         battleShip.placeShipAt(0,0,true,ocean);
         cruiser.placeShipAt(5,5,false,ocean);
@@ -88,56 +93,64 @@ public class OceanTest {
         assertFalse(ocean.isOccupied(6,9));
         assertTrue(ocean.isOccupied(7,9));
         assertTrue(ocean.isOccupied(8,9));
+    }
+
+    @Test
+   void shootAt_h() {
+        Battleship b = new Battleship();
+        b.placeShipAt(5,5,false,ocean);
+
+        assertTrue(ocean.shootAt(5,5));
+        assertEquals(1, ocean.getHitCount());
+        assertEquals(1, ocean.getShotsFired());
+        assertTrue(ocean.shootAt(5,5));
+        assertEquals(2, ocean.getHitCount());
+        assertEquals(2, ocean.getShotsFired());
+        assertTrue(ocean.shootAt(5,5));
+        assertEquals(3, ocean.getHitCount());
+        assertEquals(3, ocean.getShotsFired());
+
+        assertTrue(ocean.shootAt(6,5));
+        assertEquals(4, ocean.getHitCount());
+        assertEquals(4, ocean.getShotsFired());
+
+        assertTrue(ocean.shootAt(7,5));
+        assertEquals(5, ocean.getHitCount());
+        assertEquals(5, ocean.getShotsFired());
+
+        assertTrue(ocean.shootAt(8,5));
+        assertEquals(6, ocean.getHitCount());
+        assertEquals(6, ocean.getShotsFired());
+
+        assertEquals(1, ocean.getShipsSunk());
+
+        assertFalse(ocean.shootAt(5,5));
+
+        assertEquals(6, ocean.getHitCount());
+        assertEquals(7, ocean.getShotsFired());
+
+        assertFalse(ocean.shootAt(5,4));
+        assertFalse(ocean.shootAt(4,6));
+        assertFalse(ocean.shootAt(4,5));
+        assertFalse(ocean.shootAt(5,5));
+
+        assertEquals(11, ocean.getShotsFired());
+        assertEquals(6, ocean.getHitCount());
+    }
+
+    void shootAt_v() {
+
+
+
+
+
+
+
+
 
     }
 
 
-
-
-//
-//    @Test
-//    public void testShootAt() {
-//        Cruiser c = new Cruiser();
-//        c.placeShipAt(3,3,true,o);
-//
-//        //hit the target
-//        assertTrue(o.shootAt(3,3));
-//        assertEquals(1, o.getHitCount());
-//        assertEquals(1, o.getShotsFired());
-//
-//        //repeat hitting
-//        assertTrue(o.shootAt(3,3));
-//        assertEquals(2, o.getHitCount());
-//        assertEquals(2, o.getShotsFired());
-//
-//        //repeat hitting
-//        assertTrue(o.shootAt(3,3));
-//        assertEquals(3, o.getHitCount());
-//        assertEquals(3, o.getShotsFired());
-//
-//        //hit the middle part
-//        assertTrue(o.shootAt(3,4));
-//        assertEquals(4, o.getHitCount());
-//        assertEquals(4, o.getShotsFired());
-//
-//        //hit the end
-//        assertTrue(o.shootAt(3,5));
-//        assertEquals(5, o.getHitCount());
-//        assertEquals(5, o.getShotsFired());
-//
-//        //ship has been sunk
-//        assertEquals(1, o.getShipsSunk());
-//        assertFalse(o.shootAt(3,3));
-//        assertEquals(5, o.getHitCount());
-//        assertEquals(6, o.getShotsFired());
-//
-//        //miss shot
-//        assertFalse(o.shootAt(3,2));
-//        assertFalse(o.shootAt(3,6));
-//        assertFalse(o.shootAt(5,5));
-//        assertFalse(o.shootAt(5,5)); // repeated hit
-//        assertEquals(10, o.getShotsFired());
-//
 //        //check the vertical direction
 //        Destroyer d = new Destroyer();
 //        d.placeShipAt(7,7,false,o);
