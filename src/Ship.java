@@ -166,7 +166,7 @@ public abstract class Ship {
 
     public String toString() {
         if (isSunk()){
-            return "x";
+            return "X";
         }
         return "S";
     }

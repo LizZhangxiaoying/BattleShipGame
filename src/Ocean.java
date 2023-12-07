@@ -244,14 +244,10 @@ public class Ocean implements OceanInterface {
 
 				if (gridUsed.contains(convertGrid(i,j))) {
 					System.out.printf("%s\t", ships[i][j].toString());
-
-				}else if (!ships[i][j].getShipType().equals("emptySea")) {
-					System.out.printf("%c\t", ships[i][j].getShipType().charAt(0));
 				}else {
 					System.out.print(".\t");
 				}
 			}
-
 			System.out.printf("\n");
 		}
 	}

@@ -195,6 +195,6 @@ class ShipTest{
         battleShip.shootAt(1,0);
         battleShip.shootAt(2,0);
         battleShip.shootAt(3,0);
-        assertEquals("x", battleShip.toString());
+        assertEquals("X", battleShip.toString());
     }
 }
