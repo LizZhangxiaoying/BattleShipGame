@@ -1,24 +1,27 @@
+
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * This class manages the game state by keeping track of what entity is
- * contained in each position on the game board.
- * 
- * @author harry
+ * This is the Ocean class
+ * This class manages the game state by monitoring the entity present in each position
+ * on the game board.
+ * It is an implementation of the OceanInterface
+ *
+ * @author Jason Su and Xiaoying Zhang
  *
  */
 public class Ocean implements OceanInterface {
 
 	/**
-	 * A 10x10 2D array of Ships, which can be used to quickly determine which ship
+	 * A 10x10 2D array of Ships, which can be used to quickly identify which ship
 	 * is in any given location.
 	 */
 	protected Ship[][] ships;
 
 	/**
-	 * The total number of shots fired by the user
+	 * Used to keep track of the total number of shots fired by the user
 	 */
 	protected int shotsFired;
 

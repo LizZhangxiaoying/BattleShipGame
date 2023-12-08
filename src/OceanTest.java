@@ -1,3 +1,4 @@
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.*;
 
@@ -6,7 +7,11 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * This is the test for ocean class.
+ * No comments here.
+ * @author Jason Su and Xiaoying Zhang
+ */
 public class OceanTest {
     private Ocean ocean;
 

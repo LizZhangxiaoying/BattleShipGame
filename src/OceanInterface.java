@@ -1,4 +1,10 @@
 
+/**
+ * This is the Ocean interface
+ *
+ * @author Jason Su and Xiaoying Zhang
+ *
+ */
 public interface OceanInterface {
 
 	/**
