@@ -94,9 +94,8 @@ void testOccupy() {
         assertTrue(ocean.isOccupied(7,9));
         assertTrue(ocean.isOccupied(8,9));
     }
-
     @Test
-   void shootAt_h() {
+   void shootAt_H() {
         Battleship b = new Battleship();
         b.placeShipAt(5,5,false,ocean);
 
@@ -137,83 +136,72 @@ void testOccupy() {
         assertEquals(11, ocean.getShotsFired());
         assertEquals(6, ocean.getHitCount());
     }
+    @Test
+    void shootAt_V() {
+        Destroyer d = new Destroyer();
+        d.placeShipAt(5,5,false,ocean);
+        assertTrue(ocean.shootAt(5,5));
+        assertEquals(1, ocean.getHitCount());
+        assertEquals(1, ocean.getShotsFired());
+        assertTrue(ocean.shootAt(5,5));
+        assertEquals(2, ocean.getHitCount());
+        assertEquals(2, ocean.getShotsFired());
+        assertTrue(ocean.shootAt(6,5));
+        assertEquals(3, ocean.getHitCount());
+        assertEquals(3, ocean.getShotsFired());
+        assertFalse(ocean.shootAt(6,5));
+        assertEquals(3, ocean.getHitCount());
+        assertEquals(4, ocean.getShotsFired());
 
-    void shootAt_v() {
+        assertEquals(1, ocean.getShipsSunk());
 
-
-
-
-
-
-
-
-
+        assertFalse(ocean.shootAt(5,4));
+        assertFalse(ocean.shootAt(4,6));
+        assertFalse(ocean.shootAt(4,5));
+        assertFalse(ocean.shootAt(5,5));
     }
+    @Test
+    void shootAt_All() {
+        ocean.placeAllShipsRandomly();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                ocean.shootAt(i, j);
+            }
+        }
+        assertEquals(20, ocean.getHitCount());
+        assertEquals(100, ocean.getShotsFired());
 
-
-//        //check the vertical direction
-//        Destroyer d = new Destroyer();
-//        d.placeShipAt(7,7,false,o);
-//        assertTrue(o.shootAt(7,7));
-//        assertEquals(6, o.getHitCount());
-//        assertEquals(11, o.getShotsFired());
-//        assertTrue(o.shootAt(7,7));
-//        assertEquals(7, o.getHitCount());
-//        assertEquals(12, o.getShotsFired());
-//        assertTrue(o.shootAt(8,7));
-//        assertEquals(8, o.getHitCount());
-//        assertEquals(13, o.getShotsFired());
-//        assertFalse(o.shootAt(8,7));
-//        assertEquals(8, o.getHitCount());
-//        assertEquals(14, o.getShotsFired());
-//
-//        //final result
-//        Ocean newOcean = new Ocean();
-//        newOcean.placeAllShipsRandomly();
-//        for (int row = 0; row < 10; row++) {
-//            for (int col = 0; col < 10; col++) {
-//                newOcean.shootAt(row, col);
-//            }
-//        }
-//        assertEquals(20, newOcean.getHitCount());
-//        assertEquals(100, newOcean.getShotsFired());
-//
-//        for (int i = 0; i < 10; i+=1) {
-//            for (int j = 0; j < 10; j+=1) {
-//                newOcean.shootAt(i, j);
-//            }
-//        }
-//        assertEquals(20, newOcean.getHitCount());
-//        assertTrue(newOcean.getShotsFired() > 100);
-//    }
-//
-
-//
-
-//
-//    @Test
-//    public void testPrint() {
-//        PrintStream originalOut = System.out;
-//        OutputStream outputStream = new ByteArrayOutputStream();
-//        PrintStream printStream = new PrintStream(outputStream);
-//        System.setOut(printStream);
-//        Submarine s = new Submarine();
-//        Cruiser c = new Cruiser();
-//        s.placeShipAt(0,0,false,o);
-//        c.placeShipAt(0,6,true,o);
-//        o.shootAt(0,0);
-//        o.shootAt(0,4);
-//        o.shootAt(0,6);
-//        o.shootAt(0,8);
-//        o.print();
-//        String printedContents = outputStream.toString();
-//        int start = printedContents.indexOf("0 x");
-//        String row1 = printedContents.substring(start,start+32);
-//        System.out.println(printedContents);
-//        assertEquals("0 x  .  .  .  _  .  S  .  S  .  ", row1);  //check row 1 meet
-//        System.out.close();
-//        System.setOut(originalOut);
-//    }
-
-
+        for (int i = 0; i < 10;i++) {
+            for (int j = 0; j < 10; j++) {
+                ocean.shootAt(i, j);
+            }
+        }
+        assertEquals(20, ocean.getHitCount());
+        assertEquals(200, ocean.getShotsFired());
+        assertEquals(10, ocean.getShipsSunk());
+    }
+    @Test
+    public void testPrint() {
+        PrintStream originalOut = System.out;
+        OutputStream outStream = new ByteArrayOutputStream();
+        PrintStream inStream = new PrintStream(outStream);
+        System.setOut(inStream);
+        Submarine s = new Submarine();
+        Destroyer d = new Destroyer();
+        s.placeShipAt(0,5,false,ocean);
+        d.placeShipAt(0,8,true,ocean);
+        ocean.shootAt(0,7);
+        ocean.shootAt(0,5);
+        ocean.shootAt(0,8);
+        ocean.shootAt(0,0);
+        ocean.print();
+        String print = outStream.toString();
+        int start = print.indexOf("0\t-");
+        String firstRow = print.substring(start,start+21);
+        System.out.println(print);
+        System.out.println(firstRow);
+        assertEquals("0\t-\t.\t.\t.\t.\tX\t.\t-\tS\t.", firstRow);  //check row 1 meet
+        System.out.close();
+        System.setOut(originalOut);
+    }
 }
